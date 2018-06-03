@@ -1,0 +1,8 @@
+language: java
+script: mvn test
+addons:
+  apt:
+    packages:
+      - openjdk-8-jdk
+jdk:
+  - openjdk8

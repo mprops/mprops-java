@@ -1,0 +1,13 @@
+# Maven
+target
+
+# IDEA
+.idea
+*.iml
+release.properties
+
+# Eclipse
+.classpath
+.project
+.settings
+
