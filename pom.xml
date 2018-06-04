@@ -84,9 +84,9 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <configuration>
-                            <additionalJOption>-html5</additionalJOption>
-                        </configuration>
+                        <!--<configuration>-->
+                            <!--<additionalJOption>-html5</additionalJOption>-->
+                        <!--</configuration>-->
                     </execution>
                 </executions>
             </plugin>
