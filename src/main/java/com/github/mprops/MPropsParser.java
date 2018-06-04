@@ -1,4 +1,4 @@
-package com.github.mulpr;
+package com.github.mprops;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,10 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
-public class MulprParser {
+public class MPropsParser {
 
     public static final char KEY_PREFIX_CHAR = '~';
 
+    /**
+     * Parses multiline properties from the given input reader.
+     * Throws runtime exception if parsing error occurs.
+     *
+     * @return map of properties: property name -> property value. Never returns null.
+     */
     @NotNull
     public Map<String, String> parse(@NotNull Reader reader) {
         try {
@@ -22,29 +28,34 @@ public class MulprParser {
 
     @NotNull
     protected Map<String, String> parseImpl(@NotNull Reader reader) throws IOException {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         String key = "";
         StringBuilder value = new StringBuilder();
+        boolean readingHeader = true;
         try (BufferedReader lineReader = new BufferedReader(reader)) {
             int lineNumber = 0;
             while (true) {
                 String line = lineReader.readLine();
-                if (line == null) {
+                if (line == null) { // EOF
                     break;
                 }
                 lineNumber++;
-                if (key.isEmpty() || line.charAt(0) == KEY_PREFIX_CHAR) {
-                    if (!key.isEmpty()) {
+                if (readingHeader && (line.isEmpty() || line.charAt(0) != KEY_PREFIX_CHAR)) {
+                    continue; // Skip header's comment
+                }
+                if (line.charAt(0) == KEY_PREFIX_CHAR) {
+                    if (!key.isEmpty()) { // put finished property to the result, start a new one
                         result.put(key, value.toString());
                         value.setLength(0);
                     }
+                    readingHeader = false;
                     key = parseKey(line, lineNumber);
-                    continue;
+                } else {
+                    if (value.length() > 0) {
+                        value.append("\n");
+                    }
+                    value.append(fixLinePrefix(line));
                 }
-                if (value.length() > 0) {
-                    value.append("\n");
-                }
-                value.append(fixLinePrefix(line));
             }
             if (!key.isEmpty()) {
                 result.put(key, value.toString());

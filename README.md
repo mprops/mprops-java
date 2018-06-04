@@ -1,2 +1,1 @@
-# MULPR
-Multiple properties data format
+# MProps - multiline properties data format

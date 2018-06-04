@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.mulpr</groupId>
-    <artifactId>mulpr</artifactId>
+    <groupId>com.github.mprops</groupId>
+    <artifactId>mprops</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
-    <name>Multi-line properties data format</name>
-    <description>Multi-line properties data format</description>
-    <url>https://github.com/mulpr</url>
+    <name>Multiline properties data format</name>
+    <description>Multiline properties data format</description>
+    <url>https://github.com/mprops</url>
 
     <licenses>
         <license>
