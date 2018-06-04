@@ -28,7 +28,7 @@ public class MPropsParser {
     }
 
     @NotNull
-    protected Map<String, String> parseImpl(@NotNull Reader reader) throws IOException {
+    private Map<String, String> parseImpl(@NotNull Reader reader) throws IOException {
         Map<String, String> result = new HashMap<>();
         String key = "";
         StringBuilder value = new StringBuilder();

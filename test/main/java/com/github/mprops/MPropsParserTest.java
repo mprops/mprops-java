@@ -33,11 +33,29 @@ public class MPropsParserTest {
     }
 
     @Test
+    public void testParseEmptyValue() {
+        String key1 = "key1";
+        String key2 = "key2";
+        Map<String, String> result = new MPropsParser().parse(new StringReader("~" + key1 + "\n~" + key2 + "\n"));
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals("", result.get(key1));
+        Assert.assertEquals("", result.get(key2));
+    }
+
+    @Test
+    public void testParseEmptyValueNoNewLine() {
+        String key = "key";
+        Map<String, String> result = new MPropsParser().parse(new StringReader("~" + key));
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("", result.get(key));
+    }
+
+    @Test
     public void testParseWithHeaderComment() {
         String key1 = "key1";
         String value1 = "Line 1-1 \n Line 1-2";
 
-        String text = "here is a header comment\n with multiple lines and \n ~ inside\n~ " + key1 + " \n" + value1;
+        String text = "here is a header comment\n with multiple lines and \n ~ inside\n\n.\n~ " + key1 + " \n" + value1;
         Map<String, String> props = new MPropsParser().parse(new StringReader(text));
         Assert.assertEquals(1, props.size());
         Assert.assertEquals(value1, props.get(key1));
@@ -56,6 +74,16 @@ public class MPropsParserTest {
         String keyLine = "~~ good key ";
         String key = new MPropsParser().parseKey(keyLine, 1);
         Assert.assertEquals("~ good key", key);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseKeyWrongContext1() {
+        new MPropsParser().parseKey(" ~key", 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseKeyWrongContext2() {
+        new MPropsParser().parseKey("", 1);
     }
 
     @Test
