@@ -15,7 +15,8 @@ public class MPropsParser {
      * Parses multiline properties from the given input reader.
      * Throws runtime exception if parsing error occurs.
      *
-     * @return map of properties: property name -> property value. Never returns null.
+     * @param reader an input to read.
+     * @return map of properties: [property name] : property value. Never returns null.
      */
     @NotNull
     public Map<String, String> parse(@NotNull Reader reader) {
