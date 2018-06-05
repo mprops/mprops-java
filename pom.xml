@@ -6,7 +6,7 @@
 
     <groupId>com.github.mprops</groupId>
     <artifactId>mprops</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <packaging>jar</packaging>
     <name>Multiline properties data format</name>
@@ -27,6 +27,14 @@
         <tag>HEAD</tag>
         <url>https://github.com/mfursov/mtr</url>
     </scm>
+
+    <!-- List of active developers. Required by Sonatype .-->
+    <developers>
+        <developer>
+            <id>mprops-team</id>
+            <name>mprops team</name>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -85,7 +93,7 @@
                             <goal>jar</goal>
                         </goals>
                         <!--<configuration>-->
-                            <!--<additionalJOption>-html5</additionalJOption>-->
+                        <!--<additionalJOption>-html5</additionalJOption>-->
                         <!--</configuration>-->
                     </execution>
                 </executions>
