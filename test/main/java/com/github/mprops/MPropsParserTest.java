@@ -1,11 +1,14 @@
 package com.github.mprops;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MPropsParserTest {
 
@@ -141,4 +144,13 @@ public class MPropsParserTest {
         new MPropsParser().parseKey("~ ", 1);
     }
 
+
+    @Test
+    public void testBiConsumer() {
+        List<String> keys = new ArrayList<>();
+        new MPropsParser().parse(new StringReader("~key\nvalue1\n~key\nvalue2"), (key, value) -> keys.add(key));
+        Assert.assertEquals(2, keys.size());
+        Assert.assertEquals("key", keys.get(0));
+        Assert.assertEquals("key", keys.get(1));
+    }
 }

@@ -1,13 +1,18 @@
 package com.github.mprops;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
+import java.util.function.BiConsumer;
 
+/**
+ * Parser implementation for multiline properties (MProps) format.
+ */
 public class MPropsParser {
 
     public static final char KEY_PREFIX_CHAR = '~';
@@ -35,16 +40,29 @@ public class MPropsParser {
      */
     @NotNull
     public Map<String, String> parse(@NotNull Reader reader) {
+        Map<String, String> result = new HashMap<>();
+        parse(reader, result::put);
+        return result;
+    }
+
+    /**
+     * Parses multiline properties from the given input.
+     * Throws runtime exception if parsing or IO error occurs.
+     * <p>
+     * Closes the reader.
+     *
+     * @param reader             an input to read.
+     * @param propertiesConsumer consumer for key/values read.
+     */
+    public void parse(@NotNull Reader reader, @NotNull BiConsumer<String, String> propertiesConsumer) {
         try {
-            return parseImpl(reader);
+            parseImpl(reader, propertiesConsumer);
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to read input", e);
         }
     }
 
-    @NotNull
-    private Map<String, String> parseImpl(@NotNull Reader reader) throws IOException {
-        Map<String, String> result = new HashMap<>();
+    private void parseImpl(@NotNull Reader reader, @NotNull BiConsumer<String, String> consumer) throws IOException {
         String key = "";
         StringBuilder value = new StringBuilder();
         boolean readingHeader = true;
@@ -61,7 +79,7 @@ public class MPropsParser {
                 }
                 if (line.charAt(0) == KEY_PREFIX_CHAR) {
                     if (!key.isEmpty()) { // put finished property to the result, start a new one
-                        result.put(key, value.toString());
+                        consumer.accept(key, value.toString());
                         value.setLength(0);
                     }
                     readingHeader = false;
@@ -74,9 +92,8 @@ public class MPropsParser {
                 }
             }
             if (!key.isEmpty()) {
-                result.put(key, value.toString());
+                consumer.accept(key, value.toString());
             }
-            return result;
         }
     }
 
