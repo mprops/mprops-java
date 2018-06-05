@@ -3,7 +3,7 @@
 
 Format:
 <pre>
-<b>~ property key1 (leading and trailing whitespaces are trimmed, this text in parens is a part of the key!)</b>
+<b>~ key1 (leading and trailing whitespaces are trimmed, this text in parens is a part of the key!)</b>
 Multiline
 Property
 Value1
