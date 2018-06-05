@@ -1,5 +1,6 @@
 # Multiline properties format for Java
 [![Build Status](https://travis-ci.org/mprops/mprops-java.svg?branch=master)](https://travis-ci.org/mprops/mprops-java) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Coverage Status](https://coveralls.io/repos/github/mprops/mprops-java/badge.svg?branch=master)](https://coveralls.io/github/mprops/mprops-java?branch=master)
 
 Format:
 <pre>

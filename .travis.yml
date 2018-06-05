@@ -1,8 +1,6 @@
 language: java
 script: mvn test
-addons:
-  apt:
-    packages:
-      - openjdk-8-jdk
+after_success:
+  - mvn jacoco:report coveralls:report
 jdk:
-  - openjdk8
+  - oraclejdk8
