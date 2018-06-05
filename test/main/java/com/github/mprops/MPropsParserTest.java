@@ -1,7 +1,9 @@
 package com.github.mprops;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,7 +14,7 @@ public class MPropsParserTest {
         String key = "key";
         String value = " Line 1 \n Line 2";
         String text = "~ " + key + " \n" + value;
-        Map<String, String> props = new MPropsParser().parse(new StringReader(text));
+        Map<String, String> props = new MPropsParser().parse(text);
         Assert.assertEquals(1, props.size());
         Assert.assertEquals(key, props.keySet().iterator().next());
         Assert.assertEquals(value, props.values().iterator().next());
@@ -26,7 +28,7 @@ public class MPropsParserTest {
         String value2 = " Line 1-2 \nLine 2-2";
 
         String text = "~ " + key1 + " \n" + value1 + "\r\n~" + key2 + "\r\n" + value2;
-        Map<String, String> props = new MPropsParser().parse(new StringReader(text));
+        Map<String, String> props = new MPropsParser().parse(text);
         Assert.assertEquals(2, props.size());
         Assert.assertEquals(value1, props.get(key1));
         Assert.assertEquals(value2, props.get(key2));
@@ -36,7 +38,7 @@ public class MPropsParserTest {
     public void testParseEmptyValue() {
         String key1 = "key1";
         String key2 = "key2";
-        Map<String, String> result = new MPropsParser().parse(new StringReader("~" + key1 + "\n~" + key2 + "\n"));
+        Map<String, String> result = new MPropsParser().parse("~" + key1 + "\n~" + key2 + "\n");
         Assert.assertEquals(2, result.size());
         Assert.assertEquals("", result.get(key1));
         Assert.assertEquals("", result.get(key2));
@@ -45,22 +47,58 @@ public class MPropsParserTest {
     @Test
     public void testParseEmptyValueNoNewLine() {
         String key = "key";
-        Map<String, String> result = new MPropsParser().parse(new StringReader("~" + key));
+        Map<String, String> result = new MPropsParser().parse("~" + key);
         Assert.assertEquals(1, result.size());
         Assert.assertEquals("", result.get(key));
     }
 
-    @Test
-    public void testParseWithHeaderComment() {
-        String key1 = "key1";
-        String value1 = "Line 1-1 \n Line 1-2";
+    @Test(expected = RuntimeException.class)
+    public void testParseOnIOException() {
+        new MPropsParser().parse(new StringReader("never parsed") {
+            @Override
+            public int read() throws IOException {
+                throw new IOException("error1");
+            }
 
-        String text = "here is a header comment\n with multiple lines and \n ~ inside\n\n.\n~ " + key1 + " \n" + value1;
-        Map<String, String> props = new MPropsParser().parse(new StringReader(text));
-        Assert.assertEquals(1, props.size());
-        Assert.assertEquals(value1, props.get(key1));
+            @Override
+            public int read(@NotNull char[] buf, int off, int len) throws IOException {
+                throw new IOException("error2");
+            }
+        });
     }
 
+    @Test
+    public void testParseWithHeaderComment() {
+        String key = "key";
+        String value = "Line 1-1 \n Line 1-2";
+
+        String text = "here is a header comment\n with multiple lines and \n ~ inside\n\n.\n~ " + key + " \n" + value;
+        Map<String, String> props = new MPropsParser().parse(text);
+        Assert.assertEquals(1, props.size());
+        Assert.assertEquals(value, props.get(key));
+    }
+
+    @Test
+    public void testParseEscapedValue1() {
+        String key = "key";
+        String value = "~value";
+
+        String text = "~" + key + "\n " + value;
+        Map<String, String> props = new MPropsParser().parse(text);
+        Assert.assertEquals(1, props.size());
+        Assert.assertEquals(value, props.get(key));
+    }
+
+    @Test
+    public void testParseEscapedValue2() {
+        String key = "key";
+        String value = " ~value";
+
+        String text = "~" + key + "\n " + value;
+        Map<String, String> props = new MPropsParser().parse(text);
+        Assert.assertEquals(1, props.size());
+        Assert.assertEquals(value, props.get(key));
+    }
 
     @Test
     public void testParseKey1() {

@@ -3,6 +3,7 @@ package com.github.mprops;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +13,22 @@ public class MPropsParser {
     public static final char KEY_PREFIX_CHAR = '~';
 
     /**
-     * Parses multiline properties from the given input reader.
+     * Parses multiline properties from the given text.
      * Throws runtime exception if parsing error occurs.
+     *
+     * @param text text to parse.
+     * @return map of properties: [property name] : property value. Never returns null.
+     */
+    @NotNull
+    public Map<String, String> parse(@NotNull String text) {
+        return parse(new StringReader(text));
+    }
+
+    /**
+     * Parses multiline properties from the given input.
+     * Throws runtime exception if parsing or IO error occurs.
+     * <p>
+     * Closes the reader.
      *
      * @param reader an input to read.
      * @return map of properties: [property name] : property value. Never returns null.
@@ -66,7 +81,7 @@ public class MPropsParser {
     }
 
     @NotNull
-    protected String fixLinePrefix(@NotNull String line) {
+    String fixLinePrefix(@NotNull String line) {
         if (line.isEmpty() || line.charAt(0) != ' ') {
             return line;
         }
@@ -83,7 +98,7 @@ public class MPropsParser {
     }
 
     @NotNull
-    protected String parseKey(@NotNull String line, int lineNumber) {
+    String parseKey(@NotNull String line, int lineNumber) {
         if (line.isEmpty() || line.charAt(0) != KEY_PREFIX_CHAR) {
             throw new IllegalArgumentException("Expected token name at line: " + lineNumber + ", got: " + (line.length() < 50 ? line : line.substring(0, 50)));
         }
@@ -93,5 +108,4 @@ public class MPropsParser {
         }
         return key;
     }
-
 }
