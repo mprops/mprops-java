@@ -1,6 +1,6 @@
 # Multiline properties format for Java
 [![Build Status](https://travis-ci.org/mprops/mprops-java.svg?branch=master)](https://travis-ci.org/mprops/mprops-java)
-[![Coverage Status](https://coveralls.io/repos/github/mprops/mprops-java/badge.svg?branch=master)](https://coveralls.io/github/mprops/mprops-java?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/mprops/mprops-java/badge.svg)](https://coveralls.io/github/mprops/mprops-java)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mprops/mprops/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mprops/mprops)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
