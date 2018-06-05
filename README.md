@@ -19,6 +19,6 @@ Map<String, String> properties = new MPropsParser().parse(text);
 ```
 or
 ```java
-Map<String, String> properties = new MPropsParser().parse(new FIleReader("path-to-file"));
+Map<String, String> properties = new MPropsParser().parse(new FileReader("path-to-file"));
 ```
 >
