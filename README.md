@@ -21,4 +21,3 @@ or
 ```java
 Map<String, String> properties = new MPropsParser().parse(new FileReader("path-to-file"));
 ```
->
