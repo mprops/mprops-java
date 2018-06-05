@@ -4,19 +4,19 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mprops/mprops/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mprops/mprops)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Format:
+## Format
 <pre>
-<b>~ key1 (leading and trailing whitespaces are trimmed, this text in parens is a part of the key!)</b>
+<i>Any text before the first key
+is considered as a comment</i>
+<b>~ key1. Keys are 1-line strings started with '~'. Leading/trailing whitespaces are removed</b>
 Multiline
-Property
 Value1
 <b>~ key2</b>
 Multiline
-Property
 Value2
 </pre>
 
-## Usage:
+## Usage
 ```java
 Map<String, String> properties = new MPropsParser().parse(text);
 ```
@@ -24,7 +24,10 @@ or
 ```java
 Map<String, String> properties = new MPropsParser().parse(new FileReader("path-to-file"));
 ```
-
+or with a streaming
+```java
+new MPropsParser().parse(new FileReader("path-to-file"), new BiConsumer<String, String>(){...});
+```
 
 ## Maven
 ```xml
