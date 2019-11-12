@@ -35,6 +35,6 @@ new MPropsParser().parse(new FileReader("path-to-file"), new BiConsumer<String, 
     <dependency>
         <groupId>com.github.mprops</groupId>
         <artifactId>mprops</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
 ```
