@@ -3,4 +3,4 @@ script: mvn test
 after_success:
   - mvn jacoco:report coveralls:report
 jdk:
-  - oraclejdk8
+  - oraclejdk11
