@@ -1,7 +1,5 @@
 package com.github.mprops;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -9,6 +7,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Parser implementation for multiline properties (MProps) format.
@@ -77,7 +76,7 @@ public class MPropsParser {
                 if (readingHeader && (line.isEmpty() || line.charAt(0) != KEY_PREFIX_CHAR)) {
                     continue; // Skip header's comment
                 }
-                if (line.charAt(0) == KEY_PREFIX_CHAR) {
+                if (line.length() > 0 && line.charAt(0) == KEY_PREFIX_CHAR) {
                     if (!key.isEmpty()) { // put finished property to the result, start a new one
                         consumer.accept(key, value.toString());
                         value.setLength(0);

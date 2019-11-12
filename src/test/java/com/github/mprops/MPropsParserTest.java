@@ -117,6 +117,22 @@ public class MPropsParserTest {
         Assert.assertEquals("~ good key", key);
     }
 
+    @Test
+    public void testParseEmptyLineInComment1() {
+        String text = "Comment part 1\n\nComment part 2\n~key\nvalue";
+        Map<String, String> result = new MPropsParser().parse(text);
+        Assert.assertEquals(result.size(), 1);
+        Assert.assertEquals(result.get("key"), "value");
+    }
+
+    @Test
+    public void testParseEmptyLineInValue() {
+        String text = "~key\nvalue part 1\n\nvalue part 2";
+        Map<String, String> result = new MPropsParser().parse(text);
+        Assert.assertEquals(result.size(), 1);
+        Assert.assertEquals(result.get("key"), "value part 1\n\nvalue part 2");
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testParseKeyWrongContext1() {
         new MPropsParser().parseKey(" ~key", 1);
