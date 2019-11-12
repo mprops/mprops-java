@@ -22,10 +22,10 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/mfursov/mtr.git</connection>
-        <developerConnection>scm:git:https://github.com/mfursov/mtr.git</developerConnection>
+        <connection>scm:git:https://github.com/mprops/mprops-java.git</connection>
+        <developerConnection>scm:git:https://github.com/mprops/mprops-java.git</developerConnection>
         <tag>HEAD</tag>
-        <url>https://github.com/mfursov/mtr</url>
+        <url>https://github.com/mprops/mprops</url>
     </scm>
 
     <!-- List of active developers. Required by Sonatype .-->
@@ -111,9 +111,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>com.github.mfursov.mtr</Export-Package>
+                        <Export-Package>com.github.mprops</Export-Package>
                         <Bundle-License>http://www.apache.org/licenses/LICENSE-2.0</Bundle-License>
-                        <Bundle-DocURL>https://github.com/mfursov/mtr</Bundle-DocURL>
+                        <Bundle-DocURL>https://github.com/mprops/mprops-java</Bundle-DocURL>
                     </instructions>
                 </configuration>
                 <executions>
