@@ -30,11 +30,21 @@ or with a streaming
 new MPropsParser().parse(new FileReader("path-to-file"), new BiConsumer<String, String>(){...});
 ```
 
+### Using custom key token
+```java                                  
+// All keys now starts with '>' token: example: "> key \n value".
+MPropsParser parser = new MPropsParser(">");
+```
+
+### Escaping values
+To escape any value use starting ' ' (space) character on any value line that starts with key token.
+This extra leading space will be removed (not-returned) by parser. 
+
 ## Maven
 ```xml
     <dependency>
         <groupId>com.github.mprops</groupId>
         <artifactId>mprops</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
 ```

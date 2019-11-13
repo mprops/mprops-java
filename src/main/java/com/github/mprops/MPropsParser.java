@@ -14,7 +14,23 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MPropsParser {
 
-    public static final char KEY_PREFIX_CHAR = '~';
+    public static final String DEFAULT_KEY_PREFIX = "~";
+
+    @NotNull
+    public final String keyPrefix;
+
+    @NotNull
+    protected final String prefixToUnescape;
+
+    public MPropsParser() {
+        this(DEFAULT_KEY_PREFIX);
+    }
+
+    public MPropsParser(@NotNull String keyPrefix) {
+        this.keyPrefix = keyPrefix;
+        prefixToUnescape = " " + keyPrefix;
+    }
+
 
     /**
      * Parses multiline properties from the given text.
@@ -73,11 +89,11 @@ public class MPropsParser {
                     break;
                 }
                 lineNumber++;
-                if (readingHeader && (line.isEmpty() || line.charAt(0) != KEY_PREFIX_CHAR)) {
+                if (readingHeader && !line.startsWith(keyPrefix)) {
                     continue; // Skip header's comment
                 }
-                if (line.length() > 0 && line.charAt(0) == KEY_PREFIX_CHAR) {
-                    if (!key.isEmpty()) { // put finished property to the result, start a new one
+                if (line.startsWith(keyPrefix)) {
+                    if (!key.isEmpty()) { // add current property to the result, start a new one.
                         consumer.accept(key, value.toString());
                         value.setLength(0);
                     }
@@ -87,7 +103,7 @@ public class MPropsParser {
                     if (value.length() > 0) {
                         value.append("\n");
                     }
-                    value.append(fixLinePrefix(line));
+                    value.append(unescape(line));
                 }
             }
             if (!key.isEmpty()) {
@@ -97,28 +113,16 @@ public class MPropsParser {
     }
 
     @NotNull
-    String fixLinePrefix(@NotNull String line) {
-        if (line.isEmpty() || line.charAt(0) != ' ') {
-            return line;
-        }
-        for (int i = 1; i < line.length(); i++) {
-            char c = line.charAt(i);
-            if (c != ' ') {
-                if (c == KEY_PREFIX_CHAR) {
-                    return line.substring(1);
-                }
-                break;
-            }
-        }
-        return line;
+    String unescape(@NotNull String line) {
+        return line.startsWith(prefixToUnescape) ? line.substring(1) : line;
     }
 
     @NotNull
     String parseKey(@NotNull String line, int lineNumber) {
-        if (line.isEmpty() || line.charAt(0) != KEY_PREFIX_CHAR) {
-            throw new IllegalArgumentException("Expected token name at line: " + lineNumber + ", got: " + (line.length() < 50 ? line : line.substring(0, 50)));
+        if (!line.startsWith(keyPrefix)) {
+            throw new IllegalArgumentException("Expected key token at line: " + lineNumber + ", got: " + (line.length() < 50 ? line : line.substring(0, 50)));
         }
-        String key = line.substring(1).trim();
+        String key = line.substring(keyPrefix.length()).trim();
         if (key.isEmpty()) {
             throw new IllegalArgumentException("Empty key value at line: " + lineNumber);
         }

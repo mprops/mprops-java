@@ -1,14 +1,13 @@
 package com.github.mprops;
 
-import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class MPropsParserTest {
 
@@ -95,9 +94,10 @@ public class MPropsParserTest {
     @Test
     public void testParseEscapedValue2() {
         String key = "key";
-        String value = " ~value";
+        String value = "~value";
+        String escapedValue = " " + value;
 
-        String text = "~" + key + "\n " + value;
+        String text = "~" + key + "\n" + escapedValue;
         Map<String, String> props = new MPropsParser().parse(text);
         Assert.assertEquals(1, props.size());
         Assert.assertEquals(value, props.get(key));
@@ -169,4 +169,23 @@ public class MPropsParserTest {
         Assert.assertEquals("key", keys.get(0));
         Assert.assertEquals("key", keys.get(1));
     }
+
+    @Test
+    public void testParseCustomKey1() {
+        String key1 = new MPropsParser(">").parseKey(">key", 1);
+        Assert.assertEquals("key", key1);
+
+        String key2 = new MPropsParser("~~").parseKey("~~ good key ", 1);
+        Assert.assertEquals("good key", key2);
+    }
+
+    @Test
+    public void testParseCustomKeyEscape1() {
+        Map<String, String> result = new MPropsParser(">>>").parse(">>>key\n >>>value");
+        Assert.assertEquals(1, result.size());
+
+        String value = result.get("key");
+        Assert.assertEquals(">>>value", value);
+    }
+
 }
