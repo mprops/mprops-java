@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +55,7 @@ public class MPropsParser {
      */
     @NotNull
     public Map<String, String> parse(@NotNull Reader reader) {
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new LinkedHashMap<>();
         parse(reader, result::put);
         return result;
     }
